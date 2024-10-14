@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="backimg"></div>
+
+<div class="login_page">
+    <div class = "login_contener">
+        <form class="log_form">
+            <div class="left">
+                <div class="upper">
+
+                </div>
+                <div class="center">
+                    <p>E-mail *</p>
+                    <input type="text">
+                    <p>Отображаемое имя *</p>
+                    <input type="text">
+                    <p>Имя пользователя *</p>
+                    <input type="text">
+                    <p>Пароль *</p>
+                    <input type="text">
+                    <p>Дата рождения *</p>
+                    <div class = "birthdata_reg">
+                        <section>
+                            <select>
+                                <option value="" disabled selected>День</option>
+                                {% for i in range(1, 32) %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </section>
+                        <section>
+                            <select>
+                                <option value="" disabled selected>Месяц</option>
+                                {% for i in month_data %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </section>
+                        <section>
+                            <select>
+                                <option value="" disabled selected>Год</option>
+                                {% for i in range(2024, 1898, -1) %}
+                                    <option value="{{ i }}">{{ i }}</option>
+                                {% endfor %}
+                            </select>
+                        </section>
+                    </div>
+                    
+
+
+                    <button type = "button" class = "log_button">Продолжить</button>
+                    <div class = "forgot_cont">
+                        
+                        <a class = 'relod_button' href = "/login">Уже зарегистрированы?</a>
+                    </div>
+                </div>
+                <div class="down">
+                    
+
+
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script>
+
+</script>
+{% endblock %}

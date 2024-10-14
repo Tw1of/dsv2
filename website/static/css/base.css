@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat';
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+/* login page */
+
+.backimg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 1;
+    background-image: url('../img/blue-cover1.jpg');
+    
+    
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.login_page{
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.login_contener{
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+
+}
+
+.log_form {
+    background: rgb(56, 56, 56);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    flex-direction: column;
+   
+   
+    padding: 30px;    
+    border-radius: 5px;
+}
+
+.log_form .center{
+
+    display: flex; 
+    flex-direction: column;
+
+}
+
+.log_form .left{
+    display: flex; 
+    flex-direction: row;
+
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(187, 187, 187);
+}
+
+.log_form .left p{
+    text-transform: uppercase;
+    padding-bottom: 7px;
+    padding-top: 12px;
+    
+}
+
+.log_form .left a{
+    font-weight: 500;
+    cursor: pointer;
+
+
+}
+
+.log_form .left input{
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(36, 36, 36);
+    padding: 10px 12px;
+    outline: none;
+    width: 376px;
+    color: rgb(221, 221, 221);
+    font-weight: 500;
+}
+
+
+.log_form .left .log_button{
+    margin-top: 15px;
+    margin-bottom: 7px;
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(101, 91, 255);
+    padding: 10px 12px;
+    outline: none;
+    width: 400px;
+    font-size: 14px;
+    color: rgb(221, 221, 221);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.1s;
+}
+
+.log_form .left .log_button:hover{
+    background-color: rgb(75, 62, 255);
+}
+
+.relod_button{
+    background-color: transparent;
+    padding: 0;
+    margin-top: 10px;
+    border: none;
+    color: #00c3ff;
+    transition: color 0.3s ease;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.relod_button:hover{
+    color: rgb(255, 255, 255);
+}
+
+/*sign*/
+
+.birthdata_reg{
+    display: flex;
+    flex-direction: row;
+}
+
+.birthdata_reg select {
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(36, 36, 36);
+    padding: 10px 12px;
+    outline: none;
+    width: 120px;
+    margin-right: 10px;
+    color: rgb(133, 133, 133);
+    font-weight: 500;
+    position: relative;
+    z-index: 1;
+
+}
+
+.birthdata_reg select:focus {
+
+    background-color: rgb(46, 46, 46);
+    overflow-y: auto;
+}
+
+.birthdata_reg section {
+    position: relative;
+}
