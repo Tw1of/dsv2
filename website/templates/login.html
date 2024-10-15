@@ -5,16 +5,16 @@
 
 <div class="login_page">
     <div class = "login_contener">
-        <form class="log_form">
+        <form class="log_form" action = "/sign_in" method="POST">
             <div class="left">
                 <div class="upper">
 
                 </div>
                 <div class="center">
                     <p>Адрес электронной почты или номер телефона *</p>
-                    <input type="text">
+                    <input type="email" name = "email_telephone">
                     <p>Пароль *</p>
-                    <input type="text">
+                    <input type="password" name = "password">
                     <form action= "/relod_password" method="POST">
                         <div class = "forgot_cont">
                             <input   
@@ -29,7 +29,7 @@
                         </div>
                     </form>
 
-                    <button type = "button" class = "log_button">Вход</button>
+                    <button type = "submit" class = "log_button">Вход</button>
                     <div class = "forgot_cont">
                         <span>Нужна учетная запись?</span>
                         <a class = 'relod_button' href = "/sign">Зарегистрироваться</a>
@@ -45,9 +45,7 @@
 
             </div>
         </form>
-
     </div>
-
 </div>
 
 
@@ -55,6 +53,13 @@
 
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const emailField = document.getElementById('email');
+        const relodEmailField = document.getElementById('email_relod');
 
+        emailField.addEventListener('input', function() {
+            relodEmailField.value = emailField.value;
+        });
+    });
 </script>
 {% endblock %}

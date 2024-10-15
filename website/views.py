@@ -30,3 +30,7 @@ def sign():
         "Декабрь"
     ]
     return render_template('sign.html', month_data=month_data)
+
+@views.route('/servers/@me')
+def me():
+    return render_template('@me.html')
