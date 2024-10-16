@@ -1,13 +1,20 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask_login import login_required, login_user, current_user, LoginManager, logout_user
 
-from website import views
-from .models import User
+
+from .models import User, Server
 from sqlalchemy import func, or_
 from . import db
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth = Blueprint('auth', __name__)
+
+@auth.route('/logout')
+@login_required
+async def logout():
+    logout_user()
+    return redirect(url_for('views.login'))
 
 @auth.route('/create_acc', methods=['GET', 'POST'])
 async def create_acc():
@@ -54,7 +61,7 @@ async def create_acc():
             db.session.add(new_user)
             db.session.commit()
 
-        return 'create_acc succes'
+        return redirect(url_for('views.login'))
 
 @auth.route('/sign_in', methods=['GET', 'POST'])
 async def sign_in():
@@ -65,11 +72,26 @@ async def sign_in():
     
         if user:
             if check_password_hash(user.password, password):
-                return redirect(url_for('views.me'))
+                login_user(user) 
+                return redirect(url_for('views.me', user = current_user))
             else:
                 return 'Не правильный пароль'
         else:
             return 'Почта/телефон либо пароль указаны с ошибкой'
+        
+@auth.route('/create_server', methods = ['POST'])
+async def create_server():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        new_server = Server(
+            name = name, 
+            owner_id = current_user.id,
+            count_of_players = 1
+        )
+        db.session.add(new_server)
+        db.session.commit()
+
+        return redirect(url_for('views.me', user = current_user))
 
 
 

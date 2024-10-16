@@ -12,14 +12,40 @@
     <header> 
     </header>
     <main> 
+      <div class="ds_area">
+        <div class="server_header">
+            <div class="privat_message_button">
+                <a href="/servers/@me">{{current_user.name[0]}}</a>
+            </div>
+            <div class="logout_button">
+                <a href="/logout"></a>
+            </div>
+    
+    
+    
+            {%for i in servers%}
+                <div class="add_server_button">
+                    <a href="/servers/{{i.id}}">{{i.name[0]}}</a>
+                </div>
+            {%endfor%}
+    
+    
+            <div id="show-modal-btn" class="add_server_button">
+                <a>+</a>
+            </div>
+    
+        </div>
+        {% block content %} 
 
 
-    {% block content %} 
 
 
+        {% endblock %}
+    
+    
+    </div>
+    
 
-
-    {% endblock %}
 
 
 
