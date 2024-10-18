@@ -289,6 +289,10 @@ a{
 .top_header_left{
     height: 100%;
     width: 300px;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
     background-color:var(--chatsback);
 }
 

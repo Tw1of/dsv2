@@ -5,27 +5,19 @@
 <div class="right_of_serverheader">
     <div class="top_header">
         <div class="top_header_left">
-            <input type="text" placeholder = "Найти или начать беседу" value = "">
+            <a>{{current_server.name}}</a>
         </div>
     </div>    
     <div class="pod_topheader">
         <div class="chats_header">
             <div class="dop_chats_header">
+
+            </div>
+            <div class="personal_chats_list">
                 <div class = "dop_chat">
                     <img src="" alt="">
                     <a href="">server</a>
                 </div>
-                <div class = "dop_chat">
-                    <img src="" alt="">
-                    <a href="">{{current_server.name}}</a>
-                </div>
-                <div class = "dop_chat">
-                    <img src="" alt="">
-                    <a href="">...</a>
-                </div>
-            </div>
-            <div class="personal_chats_list">
-                
             </div>
             <div class="mainPrivileges">
                 <div class="acc_info">
@@ -66,59 +58,7 @@
 
 
 
-<div id="create_server" class="modal">
-    <div id="modalBox" class="modalBox">
-        <a class="modalClose" id="close-modal-btn">&times;</a>
 
-        <div class="modalStep step1">
-            <div class="modalHeader">
-                <div class="modalHeaderName">
-                    <a>Создайте свой сервер</a>
-                </div>
-            </div>
-            <div class="modalMiddle">
-                <div id="choose-template-btn" class="patternbutton">
-                    <div class="left">
-                        <a>Свой шаблон</a>
-                    </div>
-                    <div class="right">
-                        <a></a>
-                    </div>
-                </div>
-                
-                
-            </div>
-            <div class="modalBottom">
-                <div class="modalBottomName">
-                    <a>У вас уже есть приглашение?</a>
-                </div>
-                <a class="modalBottomButton">Присоединиться к серверу</a>
-            </div>
-        </div>
-
-
-        <div class="modalStep step2">
-            <form action="/create_server" method="POST">
-                <div class="modalHeader">
-                    <div class="modalHeaderName">
-                        <a>Персонализируйте свой сервер</a>
-                    </div>
-                </div>
-                <div class="modalMiddle"> 
-                    <p>Название сервера</p>
-                    <input type="text" name = "name" value="Сервер {{current_user.name}}">
-                </div>
-                <div class="modalBottom">
-                    <div class="modalBottomContent">
-                        <a id="back-btn">Назад</a>
-                        <button type = "submit" class="modalBottomButton" style = "width: 100px;">Создать</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-
-    </div>
-</div>
 
 
 

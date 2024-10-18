@@ -1,3 +1,6 @@
+
+from flask_socketio import SocketIO
+
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, current_user, LoginManager, logout_user
 
@@ -9,6 +12,7 @@ from . import db
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth = Blueprint('auth', __name__)
+
 
 @auth.route('/logout')
 @login_required
@@ -92,7 +96,3 @@ async def create_server():
         db.session.commit()
 
         return redirect(url_for('views.me', user = current_user))
-
-
-
-

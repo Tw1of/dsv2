@@ -42,7 +42,59 @@
 
         {% endblock %}
     
-    
+        <div id="create_server" class="modal">
+          <div id="modalBox" class="modalBox">
+              <a class="modalClose" id="close-modal-btn">&times;</a>
+      
+              <div class="modalStep step1">
+                  <div class="modalHeader">
+                      <div class="modalHeaderName">
+                          <a>Создайте свой сервер</a>
+                      </div>
+                  </div>
+                  <div class="modalMiddle">
+                      <div id="choose-template-btn" class="patternbutton">
+                          <div class="left">
+                              <a>Свой шаблон</a>
+                          </div>
+                          <div class="right">
+                              <a></a>
+                          </div>
+                      </div>
+                      
+                      
+                  </div>
+                  <div class="modalBottom">
+                      <div class="modalBottomName">
+                          <a>У вас уже есть приглашение?</a>
+                      </div>
+                      <a class="modalBottomButton">Присоединиться к серверу</a>
+                  </div>
+              </div>
+      
+      
+              <div class="modalStep step2">
+                  <form action="/create_server" method="POST">
+                      <div class="modalHeader">
+                          <div class="modalHeaderName">
+                              <a>Персонализируйте свой сервер</a>
+                          </div>
+                      </div>
+                      <div class="modalMiddle"> 
+                          <p>Название сервера</p>
+                          <input type="text" name = "name" value="Сервер {{current_user.name}}">
+                      </div>
+                      <div class="modalBottom">
+                          <div class="modalBottomContent">
+                              <a id="back-btn">Назад</a>
+                              <button type = "submit" class="modalBottomButton" style = "width: 100px;">Создать</button>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+      
+          </div>
+      </div>
     </div>
     
 
