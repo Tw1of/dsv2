@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     
     <title>{% block title %}DS2{% endblock %}</title>
@@ -15,24 +14,10 @@
     <main> 
 
     {% block content %} 
-
-
     {% endblock %}
 
     {% block javascript %}
-   
-<script type="text/javascript" charset="utf-8">
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('my event', {data: 'I\'m connected!'});
-    });
-</script>
-      <script>
-
-      </script>    
-      <script src="{{ url_for('static', filename='js/base.js') }}"></script>
     {% endblock %}
-
 
     </main>
     <footer>

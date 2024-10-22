@@ -3,38 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Room</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.min.js"></script>
+    <title>Video Call Room</title>
+    <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
 </head>
 <body>
-    <h1>Chat Room</h1>
-    <div id="messages"></div>
-    <input id="messageInput" placeholder="Type a message..." />
-    <button id="sendButton">Send</button>
-
+    <h1>Video Call</h1>
+    <div>
+        <video id="localVideo" autoplay playsinline></video>
+        <video id="remoteVideo" autoplay playsinline></video>
+    </div>
+    
+    <button id="joinRoom">Join Room</button>
+    
     <script>
-        const socket = io('/chat');  // Подключение к пространству имен '/chat'
-
-        socket.on('receive_message', function(data) {
-            const messagesDiv = document.getElementById('messages');
-            messagesDiv.innerHTML += `<p>${data.message}</p>`;
-        });
-
-        document.getElementById('sendButton').onclick = function() {
-            const messageInput = document.getElementById('messageInput');
-            socket.emit('send_message', { message: messageInput.value });
-            messageInput.value = '';
+        const socket = io.connect('http://127.0.0.1:5000/chat');
+        let localStream;
+        let peerConnection;
+        const config = {
+            'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}] // STUN-сервер для WebRTC
         };
 
-        socket.on('user_connected', function(data) {
-            const messagesDiv = document.getElementById('messages');
-            messagesDiv.innerHTML += `<p>${data.message}</p>`;
-        });
+        const localVideo = document.getElementById('localVideo');
+        const remoteVideo = document.getElementById('remoteVideo');
+        const joinButton = document.getElementById('joinRoom');
+        
+        // Запрос доступа к камере и микрофону
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+            .then(stream => {
+                localVideo.srcObject = stream;
+                localStream = stream;
+            }).catch(error => {
+                console.error('Error accessing media devices.', error);
+            });
 
-        socket.on('user_disconnected', function(data) {
-            const messagesDiv = document.getElementById('messages');
-            messagesDiv.innerHTML += `<p>${data.message}</p>`;
-        });
+        // Подключение к комнате
+        joinButton.onclick = () => {
+            const room = prompt("Enter room name:");
+            const username = prompt("Enter your username:");
+            
+            socket.emit('join', {username, room});
+            
+            socket.on('join_room_announcement', data => {
+                console.log(data.message);
+            });
+
+            // Инициализация WebRTC соединения
+            startWebRTCConnection(room);
+        };
+
+        // WebRTC установка связи
+        function startWebRTCConnection(room) {
+            peerConnection = new RTCPeerConnection(config);
+            
+            // Добавляем свой поток в WebRTC соединение
+            localStream.getTracks().forEach(track => {
+                peerConnection.addTrack(track, localStream);
+            });
+
+            // Обрабатываем входящие потоки (видео другого участника)
+            peerConnection.ontrack = (event) => {
+                remoteVideo.srcObject = event.streams[0];
+            };
+
+            // ICE-кандидаты для установления связи
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.emit('candidate', {candidate: event.candidate, room: room});
+                }
+            };
+
+            // Обработка входящих ICE-кандидатов
+            socket.on('candidate', (data) => {
+                peerConnection.addIceCandidate(new RTCIceCandidate(data.candidate));
+            });
+
+            // Создание SDP предложений для связи
+            peerConnection.createOffer().then(offer => {
+                return peerConnection.setLocalDescription(offer);
+            }).then(() => {
+                socket.emit('offer', {offer: peerConnection.localDescription, room: room});
+            });
+
+            // Обработка SDP предложения
+            socket.on('offer', (data) => {
+                peerConnection.setRemoteDescription(new RTCSessionDescription(data.offer));
+                peerConnection.createAnswer().then(answer => {
+                    return peerConnection.setLocalDescription(answer);
+                }).then(() => {
+                    socket.emit('answer', {answer: peerConnection.localDescription, room: room});
+                });
+            });
+
+            // Обработка ответа на предложение
+            socket.on('answer', (data) => {
+                peerConnection.setRemoteDescription(new RTCSessionDescription(data.answer));
+            });
+        }
     </script>
 </body>
 </html>

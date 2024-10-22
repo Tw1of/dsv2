@@ -63,3 +63,8 @@ def server_detail(id):
     if current_server is None:
         return "Сервер не найден", 404
     return render_template('server.html', user=current_user, current_server=current_server, servers=servers)
+
+@views.route('/chat')
+def chat():
+    return render_template('chat.html', user = current_user)
+

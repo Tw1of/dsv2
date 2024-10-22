@@ -3,12 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_socketio import SocketIO
 
+app = Flask(__name__)
 db = SQLAlchemy()
 login_manager = LoginManager()
-socketio = SocketIO()  # Инициализация SocketIO
+socketio = SocketIO(app, cors_allowed_origins="*")
+
 
 def create_app():
-    app = Flask(__name__)
+   
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12341234@localhost/sampledsdb'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False 
