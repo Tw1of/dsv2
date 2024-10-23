@@ -15,8 +15,22 @@
             </div>
             <div class="personal_chats_list">
                 <div class = "dop_chat">
-                    <img src="" alt="">
-                    <a href="">server</a>
+                    {%for i in channelsText%}
+                        <a>{{i.name}}</a>
+                    {%endfor%}
+                </div>
+
+                <div class = "dop_chat">
+                    {%for i in channelsVoice%}
+                        <a class="roomButton" data-room="{{i.name}}">{{i.name}}</a>
+                        <div class="user-list">
+                            <ul id="participants">
+                                {% for participant in participants %}
+                                    <li>{{ participant.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {%endfor%}   
                 </div>
             </div>
             <div class="mainPrivileges">
@@ -62,7 +76,57 @@
 
 
 
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
 <script>
+    const socket = io(); // Инициализация сокета
+    const user = "{{current_user.name}}";
+    const userRooms = new Set(); // Хранит комнаты, в которых находится пользователь
 
+    document.querySelectorAll('.roomButton').forEach(button => {
+        button.addEventListener('click', () => {
+            const roomName = button.getAttribute('data-room');
+
+            // Проверяем, находится ли пользователь уже в комнате
+            if (userRooms.has(roomName)) {
+                // Если уже в комнате, выходим из нее
+                socket.emit('leave', {user, room: roomName});
+                userRooms.delete(roomName); // Удаляем комнату из Set
+                console.log(`${user} покинул комнату ${roomName}`);
+            } else {
+                // Если не в комнате, присоединяемся к ней
+                socket.emit('join', {user, room: roomName});
+                userRooms.add(roomName); // Добавляем комнату в Set
+                console.log(`${user} присоединился к комнате ${roomName}`);
+            }
+        });
+    });
+
+    // Обработка обновленного списка участников
+    socket.on('update_participants', (data) => {
+        const participantsList = document.getElementById('participants');
+        participantsList.innerHTML = ''; // Очищаем текущий список
+
+        // Добавляем новых участников
+        data.participants.forEach(participant => {
+            const li = document.createElement('li');
+            li.textContent = participant;
+            participantsList.appendChild(li);
+        });
+    });
+
+    // Обработка текущих участников при входе в комнату
+    socket.on('current_participants', (data) => {
+        const participantsList = document.getElementById('participants');
+        participantsList.innerHTML = ''; // Очищаем текущий список
+
+        // Добавляем участников, которые были переданы с сервера
+        data.participants.forEach(participant => {
+            const li = document.createElement('li');
+            li.textContent = participant;
+            participantsList.appendChild(li);
+        });
+    });
 </script>
+
+
 {% endblock %}

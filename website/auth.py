@@ -5,7 +5,7 @@ from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, current_user, LoginManager, logout_user
 
 
-from .models import User, Server
+from .models import User, Server, Channel
 from sqlalchemy import func, or_
 from . import db
 
@@ -83,16 +83,41 @@ async def sign_in():
         else:
             return 'Почта/телефон либо пароль указаны с ошибкой'
         
+
+def add_member_to_server(user_id, server_id):
+    user = User.query.get(user_id)
+    server = Server.query.get(server_id)
+    if user and server:
+        if user not in server.members:
+            server.members.append(user)  
+            db.session.commit()
+
 @auth.route('/create_server', methods = ['POST'])
 async def create_server():
     if request.method == 'POST':
         name = request.form.get('name')
         new_server = Server(
             name = name, 
-            owner_id = current_user.id,
-            count_of_players = 1
+            owner_id = current_user.id
         )
         db.session.add(new_server)
+        db.session.commit()
+        
+        add_member_to_server(current_user.id, new_server.id)
+        add_member_to_server(current_user.id  + 1, new_server.id)
+
+        new_channel1 = Channel(
+            name = 'Текстовый чат №1', 
+            is_text = True,
+            server_id = new_server.id
+        )
+        db.session.add(new_channel1)
+        new_channel2 = Channel(
+            name = 'Голосовой чат №1', 
+            is_voice = True,
+            server_id = new_server.id
+        )
+        db.session.add(new_channel2)
         db.session.commit()
 
         return redirect(url_for('views.me', user = current_user))

@@ -335,21 +335,25 @@ a{
 
 .dop_chat{
     display: flex;
-    margin: 5px;
-    padding: 14px;
-    width: calc(100% - 40px);
-    border-radius: 5px;
+    flex-direction: column;
+    width: calc(100%);
+    margin-bottom: 20px;
 }
 
-.dop_chat:hover{
-    background-color: var(--greyborder);
-    color: white;
-}
 
 .dop_chat a {
+    margin: 5px;
+    padding: 14px;
     padding-left: 20px;
     text-decoration: none;
-    color: var(--greyfontext1)
+    color: var(--greyfontext1);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dop_chat a:hover{
+    background-color: var(--greyborder);
+    color: white;
 }
 
 .personal_chats_list{
