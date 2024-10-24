@@ -1,7 +1,7 @@
 
 from flask_socketio import SocketIO
 
-from flask import Blueprint, flash, redirect, render_template, request, url_for
+from flask import session, Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import login_required, login_user, current_user, LoginManager, logout_user
 
 
@@ -75,6 +75,7 @@ async def sign_in():
         user = User.query.filter(or_(func.lower(User.email) == func.lower(email_telephone), User.telephone == email_telephone)).first()
     
         if user:
+            session['user_id'] = user.id
             if check_password_hash(user.password, password):
                 login_user(user) 
                 return redirect(url_for('views.me', user = current_user))
@@ -118,6 +119,12 @@ async def create_server():
             server_id = new_server.id
         )
         db.session.add(new_channel2)
+        new_channel3 = Channel(
+            name = 'Голосовой чат №2', 
+            is_voice = True,
+            server_id = new_server.id
+        )
+        db.session.add(new_channel3)
         db.session.commit()
 
         return redirect(url_for('views.me', user = current_user))
